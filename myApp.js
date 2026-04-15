@@ -1,4 +1,4 @@
-require('dotenv').config();
+let bodyParser = require('body-parser');
 let express = require('express');
 let app = express();
 
@@ -13,6 +13,7 @@ app.use(function(req, res, next) {
 });
 
 app.use("/public", express.static(__dirname + "/public"));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.get("/", function(req, res) {
 //  res.send("Hello Express");
 const absolutePath = __dirname + "/views/index.html";
@@ -49,6 +50,20 @@ app.get("/:word/echo", (req, res) => {
     echo: word
   });
 });
+
+app.get("/name", (req, res) => {
+  res.json({ 
+    name: req.query.first + " " + req.query.last 
+  });
+});
+
+app.post("/name", (req, res) => {
+  res.json({ 
+    name: req.body.first + " " + req.body.last 
+  });
+});
+
+
 module.exports = app;
 
 

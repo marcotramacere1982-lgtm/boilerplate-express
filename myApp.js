@@ -1,7 +1,7 @@
 require('dotenv').config();
 let express = require('express');
 let app = express();
-//console.log("Hello World");
+
 app.use(function(req, res, next) {
 
   const method = req.method;
@@ -18,11 +18,11 @@ app.get("/", function(req, res) {
 const absolutePath = __dirname + "/views/index.html";
 res.sendFile(absolutePath);
 });
-// This creates a new listener at the /json endpoint
+
 app.get("/json", (req, res) => {
 let message = "Hello json";
   
-  // 2. Check the "switch" inside the handler
+
   if (process.env.MESSAGE_STYLE === "uppercase") {
     message = message.toUpperCase();
   }
@@ -33,17 +33,22 @@ let message = "Hello json";
 });
 
 app.get("/now", (req, res, next) => {
-  // 1. Logic: Generate the time and attach it to the request object
+  
   req.time = new Date().toString();
   next(); 
 }, (req, res) => {
-  // 2. Output: Send the object to the browser
-  // Optional: console.log(req.time); // This would make it show in the terminal!
-  res.json({
+   res.json({
     time: req.time
   });
 });
+app.get("/:word/echo", (req, res) => {
 
+  const word = req.params.word;
+
+  res.json({
+    echo: word
+  });
+});
 module.exports = app;
 
 
